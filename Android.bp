@@ -1,0 +1,98 @@
+// This Blueprint file loosely follows the logic of cpu_features'
+// CMakeLists.txt file.
+
+cc_defaults {
+    name: "cpu_features-defaults",
+    host_supported: true,
+    local_include_dirs: [
+        "include",
+        "include/internal",
+    ],
+    cflags: [
+        // Reserve 1024 bytes on the stack when reading from `/proc/cpuinfo`.
+        "-DSTACK_LINE_READER_BUFFER_SIZE=1024",
+    ],
+}
+
+cc_library {
+    name: "libcpu_features-utils",
+    defaults: ["cpu_features-defaults"],
+    srcs: [
+        "src/filesystem.c",
+        "src/stack_line_reader.c",
+        "src/string_view.c",
+    ],
+}
+
+cc_library {
+    name: "libcpu_features-unix_based_hardware_detection",
+    defaults: ["cpu_features-defaults"],
+    srcs: [
+        "src/hwcaps.c",
+        "src/unix_features_aggregator.c",
+    ],
+    cflags: [
+        "-DHAVE_DLFCN_H",
+    ],
+    target: {
+        bionic: {
+            cflags: [
+                "-DHAVE_STRONG_GETAUXVAL",
+            ],
+        },
+    },
+    static_libs: [
+        "libcpu_features-utils",
+    ],
+}
+
+cc_library {
+    name: "libcpu_features",
+    defaults: [
+        "cpu_features-defaults",
+    ],
+    whole_static_libs: [
+        "libcpu_features-utils",
+    ],
+    arch: {
+        arm: {
+            srcs: [
+                "src/cpuinfo_arm.c",
+            ],
+            whole_static_libs: [
+                "libcpu_features-unix_based_hardware_detection",
+            ],
+        },
+        arm64: {
+            srcs: [
+                "src/cpuinfo_aarch64.c",
+            ],
+            whole_static_libs: [
+                "libcpu_features-unix_based_hardware_detection",
+            ],
+        },
+        x86: {
+            srcs: [
+                "src/cpuinfo_x86.c",
+            ],
+        },
+        x86_64: {
+            srcs: [
+                "src/cpuinfo_x86.c",
+            ],
+        },
+    },
+}
+
+cc_binary {
+    name: "list_cpu_features",
+    defaults: [
+        "cpu_features-defaults",
+    ],
+    srcs: [
+        "src/utils/list_cpu_features.c",
+    ],
+    static_libs: [
+        "libcpu_features",
+    ],
+}
