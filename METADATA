@@ -11,10 +11,10 @@ third_party {
     type: GIT
     value: "https://github.com/google/cpu_features.git"
   }
-  version: "7806502271dfe79b417f636839dd9de41a0be16f"
+  version: "v0.3.0"
   last_upgrade_date {
     year: 2019
-    month: 2
-    day: 13
+    month: 7
+    day: 11
   }
 }
