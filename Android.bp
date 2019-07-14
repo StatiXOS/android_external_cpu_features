@@ -11,6 +11,7 @@ cc_defaults {
     cflags: [
         // Reserve 1024 bytes on the stack when reading from `/proc/cpuinfo`.
         "-DSTACK_LINE_READER_BUFFER_SIZE=1024",
+        "-Wno-gnu-designator",
     ],
 }
 
@@ -70,15 +71,24 @@ cc_library {
             whole_static_libs: [
                 "libcpu_features-unix_based_hardware_detection",
             ],
+            cflags: [
+                "-Wno-gnu-designator",
+            ],
         },
         x86: {
             srcs: [
                 "src/cpuinfo_x86.c",
             ],
+            cflags: [
+                "-Wno-unused-variable",
+            ],
         },
         x86_64: {
             srcs: [
                 "src/cpuinfo_x86.c",
+            ],
+            cflags: [
+                "-Wno-unused-variable",
             ],
         },
     },
@@ -279,6 +289,7 @@ cc_test {
     },
     cflags: [
         "-DCPU_FEATURES_MOCK_CPUID_X86",
+        "-Wno-unused-variable",
     ],
     srcs: [
         "test/cpuinfo_x86_test.cc",
@@ -314,6 +325,9 @@ cc_test {
             enabled: true,
         },
     },
+    cflags: [
+        "-Wno-gnu-designator",
+    ],
     srcs: [
         "test/cpuinfo_aarch64_test.cc",
         "src/cpuinfo_aarch64.c",
