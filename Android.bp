@@ -266,7 +266,6 @@ cc_test {
 cc_defaults {
     name: "cpu_features-cpuinfo-test-defaults",
     defaults: ["cpu_features-test-defaults"],
-    enabled: false,
     static_libs: [
         "libcpu_features-all_libraries",
     ],
@@ -275,6 +274,7 @@ cc_defaults {
 cc_test {
     name: "cpu_features-cpuinfo_x86_test",
     defaults: ["cpu_features-cpuinfo-test-defaults"],
+    enabled: false,
     arch: {
         x86: {
             enabled: true,
@@ -304,6 +304,7 @@ cc_test {
         "cpu_features-cpuinfo-test-defaults",
         "stack_line_reader-defaults",
     ],
+    enabled: false,
     arch: {
         arm: {
             enabled: true,
@@ -317,6 +318,7 @@ cc_test {
 
 cc_test {
     name: "cpu_features-cpuinfo_aarch64_test",
+    enabled: false,
     defaults: [
         "cpu_features-cpuinfo-test-defaults",
         "stack_line_reader-defaults",
@@ -333,4 +335,52 @@ cc_test {
         "test/cpuinfo_aarch64_test.cc",
         "src/cpuinfo_aarch64.c",
     ],
+}
+
+cc_test {
+    name: "cpu_features-cpuinfo_test",
+    defaults: [
+        "cpu_features-cpuinfo-test-defaults"
+    ],
+    arch: {
+        x86: {
+            cflags: [
+                "-DCPU_FEATURES_MOCK_CPUID_X86",
+                "-Wno-unused-variable",
+            ],
+            srcs: [
+                "test/cpuinfo_x86_test.cc",
+                "src/cpuinfo_x86.c",
+            ],
+        },
+        x86_64: {
+            cflags: [
+                "-DCPU_FEATURES_MOCK_CPUID_X86",
+                "-Wno-unused-variable",
+            ],
+            srcs: [
+                "test/cpuinfo_x86_test.cc",
+                "src/cpuinfo_x86.c",
+            ],
+        },
+        arm: {
+            cflags: [
+                "-DSTACK_LINE_READER_BUFFER_SIZE=1024",
+            ],
+            srcs: [
+                "test/cpuinfo_arm_test.cc",
+                "src/cpuinfo_arm.c",
+            ],
+        },
+        arm64: {
+            cflags: [
+                "-DSTACK_LINE_READER_BUFFER_SIZE=1024",
+                "-Wno-gnu-designator",
+            ],
+            srcs: [
+                "test/cpuinfo_aarch64_test.cc",
+                "src/cpuinfo_aarch64.c",
+            ],
+        }
+    },
 }
