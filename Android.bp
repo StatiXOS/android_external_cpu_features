@@ -112,6 +112,7 @@ cc_binary {
 
 cc_defaults {
     name: "cpu_features-test-defaults",
+    test_suites: ["device-tests"],
     host_supported: true,
     local_include_dirs: [
         "include",
