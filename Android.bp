@@ -263,84 +263,13 @@ cc_test {
     ],
 }
 
-cc_defaults {
-    name: "cpu_features-cpuinfo-test-defaults",
-    defaults: ["cpu_features-test-defaults"],
-    static_libs: [
-        "libcpu_features-all_libraries",
-    ],
-}
-
-cc_test {
-    name: "cpu_features-cpuinfo_x86_test",
-    defaults: ["cpu_features-cpuinfo-test-defaults"],
-    enabled: false,
-    arch: {
-        x86: {
-            enabled: true,
-        },
-        x86_64: {
-            enabled: true,
-        },
-    },
-    target: {
-        windows: {
-            enabled: false,
-        },
-    },
-    cflags: [
-        "-DCPU_FEATURES_MOCK_CPUID_X86",
-        "-Wno-unused-variable",
-    ],
-    srcs: [
-        "test/cpuinfo_x86_test.cc",
-        "src/cpuinfo_x86.c",
-    ],
-}
-
-cc_test {
-    name: "cpu_features-cpuinfo_arm_test",
-    defaults: [
-        "cpu_features-cpuinfo-test-defaults",
-        "stack_line_reader-defaults",
-    ],
-    enabled: false,
-    arch: {
-        arm: {
-            enabled: true,
-        },
-    },
-    srcs: [
-        "test/cpuinfo_arm_test.cc",
-        "src/cpuinfo_arm.c",
-    ],
-}
-
-cc_test {
-    name: "cpu_features-cpuinfo_aarch64_test",
-    enabled: false,
-    defaults: [
-        "cpu_features-cpuinfo-test-defaults",
-        "stack_line_reader-defaults",
-    ],
-    arch: {
-        arm64: {
-            enabled: true,
-        },
-    },
-    cflags: [
-        "-Wno-gnu-designator",
-    ],
-    srcs: [
-        "test/cpuinfo_aarch64_test.cc",
-        "src/cpuinfo_aarch64.c",
-    ],
-}
-
 cc_test {
     name: "cpu_features-cpuinfo_test",
     defaults: [
-        "cpu_features-cpuinfo-test-defaults",
+        "cpu_features-test-defaults",
+    ],
+    static_libs: [
+        "libcpu_features-all_libraries",
     ],
     arch: {
         x86: {
