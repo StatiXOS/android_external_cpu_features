@@ -107,7 +107,6 @@ cc_binary {
     ],
 }
 
-
 // Tests.
 
 cc_defaults {
@@ -118,7 +117,7 @@ cc_defaults {
         "include",
     ],
     cflags: [
-        "-DCPU_FEATURES_TEST"
+        "-DCPU_FEATURES_TEST",
     ],
 }
 
@@ -217,7 +216,7 @@ cc_test {
     name: "cpu_features-bit_utils_test",
     defaults: ["cpu_features-test-defaults"],
     srcs: [
-        "test/bit_utils_test.cc"
+        "test/bit_utils_test.cc",
     ],
 }
 
@@ -340,7 +339,7 @@ cc_test {
 cc_test {
     name: "cpu_features-cpuinfo_test",
     defaults: [
-        "cpu_features-cpuinfo-test-defaults"
+        "cpu_features-cpuinfo-test-defaults",
     ],
     arch: {
         x86: {
@@ -381,6 +380,6 @@ cc_test {
                 "test/cpuinfo_aarch64_test.cc",
                 "src/cpuinfo_aarch64.c",
             ],
-        }
+        },
     },
 }
