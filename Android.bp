@@ -6,7 +6,6 @@ cc_defaults {
     host_supported: true,
     local_include_dirs: [
         "include",
-        "include/internal",
     ],
     cflags: [
         // Reserve 1024 bytes on the stack when reading from `/proc/cpuinfo`.
@@ -52,6 +51,7 @@ cc_library {
     defaults: [
         "cpu_features-defaults",
     ],
+    export_include_dirs: ["include"],
     whole_static_libs: [
         "libcpu_features-utils",
     ],
