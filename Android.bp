@@ -22,6 +22,11 @@ cc_library {
         "src/stack_line_reader.c",
         "src/string_view.c",
     ],
+    target: {
+        windows: {
+            enabled: true,
+        },
+    },
 }
 
 cc_library {
@@ -90,6 +95,11 @@ cc_library {
             cflags: [
                 "-Wno-unused-variable",
             ],
+        },
+    },
+    target: {
+        windows: {
+            enabled: true,
         },
     },
 }
