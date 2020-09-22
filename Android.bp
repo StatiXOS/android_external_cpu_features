@@ -115,6 +115,21 @@ cc_binary {
     static_libs: [
         "libcpu_features",
     ],
+    arch: {
+        // Function `AddCacheInfo` in `src/utils/list_cpu_features.c` is only used on x86/x86_64 and
+        // triggers an error with `-Werror and `-Wunused-function` on other architectures; disable
+        // the latter flag to avoid compilation errors on those architectures.
+        arm: {
+            cflags: [
+                "-Wno-unused-function",
+            ],
+        },
+        arm64: {
+            cflags: [
+                "-Wno-unused-function",
+            ],
+        },
+    },
 }
 
 // Tests.
