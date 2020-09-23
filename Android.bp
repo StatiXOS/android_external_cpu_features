@@ -27,6 +27,10 @@ cc_library {
             enabled: true,
         },
     },
+    apex_available: [
+        "com.android.art.release",
+        "com.android.art.debug",
+    ],
 }
 
 cc_library {
@@ -48,6 +52,10 @@ cc_library {
     },
     static_libs: [
         "libcpu_features-utils",
+    ],
+    apex_available: [
+        "com.android.art.release",
+        "com.android.art.debug",
     ],
 }
 
@@ -102,6 +110,10 @@ cc_library {
             enabled: true,
         },
     },
+    apex_available: [
+        "com.android.art.release",
+        "com.android.art.debug",
+    ],
 }
 
 cc_binary {
