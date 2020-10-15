@@ -1,4 +1,4 @@
-// Copyright 2017 Google Inc.
+// Copyright 2017 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,9 @@
 #ifndef CPU_FEATURES_INCLUDE_INTERNAL_HWCAPS_H_
 #define CPU_FEATURES_INCLUDE_INTERNAL_HWCAPS_H_
 
+#include <stdbool.h>
 #include <stdint.h>
+
 #include "cpu_features_macros.h"
 
 CPU_FEATURES_START_CPP_NAMESPACE
@@ -169,6 +171,8 @@ typedef struct {
 } HardwareCapabilities;
 
 HardwareCapabilities CpuFeatures_GetHardwareCapabilities(void);
+bool CpuFeatures_IsHwCapsSet(const HardwareCapabilities hwcaps_mask,
+                             const HardwareCapabilities hwcaps);
 
 typedef struct {
   char platform[64];       // 0 terminated string

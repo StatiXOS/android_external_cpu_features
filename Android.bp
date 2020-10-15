@@ -34,11 +34,10 @@ cc_library {
 }
 
 cc_library {
-    name: "libcpu_features-unix_based_hardware_detection",
+    name: "libcpu_features-hwcaps",
     defaults: ["cpu_features-defaults"],
     srcs: [
         "src/hwcaps.c",
-        "src/unix_features_aggregator.c",
     ],
     cflags: [
         "-DHAVE_DLFCN_H",
@@ -74,7 +73,7 @@ cc_library {
                 "src/cpuinfo_arm.c",
             ],
             whole_static_libs: [
-                "libcpu_features-unix_based_hardware_detection",
+                "libcpu_features-hwcaps",
             ],
         },
         arm64: {
@@ -82,7 +81,7 @@ cc_library {
                 "src/cpuinfo_aarch64.c",
             ],
             whole_static_libs: [
-                "libcpu_features-unix_based_hardware_detection",
+                "libcpu_features-hwcaps",
             ],
             cflags: [
                 "-Wno-gnu-designator",
@@ -186,8 +185,10 @@ cc_test_library {
     defaults: ["cpu_features-test-defaults"],
     cflags: [
         "-DCPU_FEATURES_MOCK_GET_ELF_HWCAP_FROM_GETAUXVAL",
+        "-DCPU_FEATURES_TEST",
     ],
     srcs: [
+        "src/hwcaps.c",
         "test/hwcaps_for_testing.cc",
     ],
     static_libs: [
@@ -239,9 +240,6 @@ cc_test_library {
         "cpu_features-test-defaults",
         "stack_line_reader-defaults",
     ],
-    srcs: [
-        "src/unix_features_aggregator.c",
-    ],
     whole_static_libs: [
         "libcpu_features-filesystem_for_testing",
         "libcpu_features-hwcaps_for_testing",
@@ -290,23 +288,15 @@ cc_test {
 }
 
 cc_test {
-    name: "cpu_features-unix_features_aggregator_test",
-    defaults: ["cpu_features-test-defaults"],
-    srcs: [
-        "test/unix_features_aggregator_test.cc",
-    ],
-    static_libs: [
-        "libcpu_features-all_libraries",
-    ],
-}
-
-cc_test {
     name: "cpu_features-cpuinfo_test",
     defaults: [
         "cpu_features-test-defaults",
     ],
     static_libs: [
         "libcpu_features-all_libraries",
+    ],
+    cflags: [
+        "-DSTACK_LINE_READER_BUFFER_SIZE=1024",
     ],
     arch: {
         x86: {
@@ -330,9 +320,6 @@ cc_test {
             ],
         },
         arm: {
-            cflags: [
-                "-DSTACK_LINE_READER_BUFFER_SIZE=1024",
-            ],
             srcs: [
                 "test/cpuinfo_arm_test.cc",
                 "src/cpuinfo_arm.c",
@@ -340,7 +327,6 @@ cc_test {
         },
         arm64: {
             cflags: [
-                "-DSTACK_LINE_READER_BUFFER_SIZE=1024",
                 "-Wno-gnu-designator",
             ],
             srcs: [
