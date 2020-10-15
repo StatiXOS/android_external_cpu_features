@@ -6,7 +6,7 @@ if(POLICY CMP0077)
   cmake_policy(SET CMP0077 NEW)
 endif()
 
-project(CpuFeatures VERSION 0.5.0 LANGUAGES C)
+project(CpuFeatures VERSION 0.6.0 LANGUAGES C)
 
 set(CMAKE_C_STANDARD 99)
 
@@ -22,8 +22,8 @@ endif(NOT CMAKE_BUILD_TYPE)
 option(BUILD_TESTING "Enable test (depends on googletest)." OFF)
 # BUILD_SHARED_LIBS is a standard CMake variable, but we declare it here to make
 # it prominent in the GUI.
-# cpu_features uses bit-fields which are - to some extends - implementation-defined (see https://en.cppreference.com/w/c/language/bit_field). 
-# As a consequence it is discouraged to use cpu_features as a shared library because different compilers may interpret the code in different ways. 
+# cpu_features uses bit-fields which are - to some extends - implementation-defined (see https://en.cppreference.com/w/c/language/bit_field).
+# As a consequence it is discouraged to use cpu_features as a shared library because different compilers may interpret the code in different ways.
 # Prefer static linking from source whenever possible.
 option(BUILD_SHARED_LIBS "Build library as shared." OFF)
 # PIC
@@ -114,9 +114,7 @@ setup_include_and_definitions(utils)
 if(UNIX)
   add_library(unix_based_hardware_detection OBJECT
     ${PROJECT_SOURCE_DIR}/include/internal/hwcaps.h
-    ${PROJECT_SOURCE_DIR}/include/internal/unix_features_aggregator.h
     ${PROJECT_SOURCE_DIR}/src/hwcaps.c
-    ${PROJECT_SOURCE_DIR}/src/unix_features_aggregator.c
   )
   setup_include_and_definitions(unix_based_hardware_detection)
   check_include_file(dlfcn.h HAVE_DLFCN_H)
@@ -148,6 +146,11 @@ set_property(TARGET cpu_features PROPERTY POSITION_INDEPENDENT_CODE ${BUILD_PIC}
 target_include_directories(cpu_features
   PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/cpu_features>
 )
+if(PROCESSOR_IS_X86)
+  if(APPLE)
+    target_compile_definitions(cpu_features PRIVATE HAVE_SYSCTLBYNAME)
+  endif()
+endif()
 add_library(CpuFeature::cpu_features ALIAS cpu_features)
 
 #
@@ -175,11 +178,11 @@ if(BUILD_TESTING)
   # Automatically incorporate googletest into the CMake Project if target not
   # found.
   enable_language(CXX)
-  
+
   set(CMAKE_CXX_STANDARD 11)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
   set(CMAKE_CXX_EXTENSIONS OFF) # prefer use of -std11 instead of -gnustd11
-  
+
   if(NOT TARGET gtest OR NOT TARGET gmock_main)
     # Download and unpack googletest at configure time.
     configure_file(

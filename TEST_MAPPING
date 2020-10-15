@@ -22,13 +22,6 @@
       "name": "cpu_features-stack_line_reader_test"
     },
     {
-      "name": "cpu_features-unix_features_aggregator_test",
-      "host": true
-    },
-    {
-      "name": "cpu_features-unix_features_aggregator_test"
-    },
-    {
       "name": "cpu_features-cpuinfo_test",
       "host": true
     },

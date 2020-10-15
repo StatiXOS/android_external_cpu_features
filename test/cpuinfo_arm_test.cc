@@ -1,4 +1,4 @@
-// Copyright 2017 Google Inc.
+// Copyright 2017 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,10 +13,10 @@
 // limitations under the License.
 
 #include "cpuinfo_arm.h"
-#include "filesystem_for_testing.h"
-#include "hwcaps_for_testing.h"
 
+#include "filesystem_for_testing.h"
 #include "gtest/gtest.h"
+#include "hwcaps_for_testing.h"
 
 namespace cpu_features {
 namespace {
